@@ -11,18 +11,18 @@ import pubsub.Message;
 import pubsub.subscriber.Subscriber;
  
 public class PubSubService {
-	//Keeps set of subscriber topic wise, using set to prevent duplicates 
+	//Behält die Menge der Abonnententhemen bei, um Duplikate zu vermeiden
 	Map<String, Set<Subscriber>> subscribersTopicMap = new HashMap<String, Set<Subscriber>>();
  
-	//Holds messages published by publishers
+	//die Warteschlange speichert die Messages zwischen
 	Queue<Message> messagesQueue = new LinkedList<Message>();
  
-	//Adds message sent by publisher to queue
+	//fügt Nachrichten der Message Warteschlange hinzu
 	public void addMessageToQueue(Message message){
 		messagesQueue.add(message);
 	}
  
-	//Add a new Subscriber for a topic
+	//fügt den Subscriber einem Thema hinzu
 	public void addSubscriber(String topic, Subscriber subscriber){
  
 		if(subscribersTopicMap.containsKey(topic)){
@@ -36,7 +36,7 @@ public class PubSubService {
 		}		
 	}
  
-	//Remove an existing subscriber for a topic
+	//entfernt den Subscriber von einem Thema
 	public void removeSubscriber(String topic, Subscriber subscriber){
  
 		if(subscribersTopicMap.containsKey(topic)){
@@ -45,12 +45,14 @@ public class PubSubService {
 			subscribersTopicMap.put(topic, subscribers);
 		}
 	}
- 
-	//Broadcast new messages added in queue to All subscribers of the topic. messagesQueue will be empty after broadcasting
+	
+	//Broadcast neuer Nachrichten die der Warteschlange hinzugefügt worden waren werden allen Subscriber von dem Thema hinzugefügt 
+	//Nachrichtenschlange ist nach dem broadcasting leer 
 	public void broadcast(){
 		if(messagesQueue.isEmpty()){
 			System.out.println("No messages from publishers to display");
-		}else{
+		}
+		else{
 			while(!messagesQueue.isEmpty()){
 				Message message = messagesQueue.remove();
 				String topic = message.getTopic();
@@ -58,7 +60,7 @@ public class PubSubService {
 				Set<Subscriber> subscribersOfTopic = subscribersTopicMap.get(topic);
  
 				for(Subscriber subscriber : subscribersOfTopic){
-					//add broadcasted message to subscribers message queue
+					//fügt broadcasted messages der Warteschlange von dem Subscriber hinzu 
 					List<Message> subscriberMessages = subscriber.getSubscriberMessages();
 					subscriberMessages.add(message);
 					subscriber.setSubscriberMessages(subscriberMessages);
@@ -66,8 +68,8 @@ public class PubSubService {
 			}
 		}
 	}
- 
-	//Sends messages about a topic for subscriber at any point
+	
+	//sendet Nachrichten zu einem Thema an die Abonnenten 
 	public void getMessagesForSubscriberOfTopic(String topic, Subscriber subscriber) {
 		if(messagesQueue.isEmpty()){
 			System.out.println("No messages from publishers to display");
@@ -81,7 +83,7 @@ public class PubSubService {
  
 					for(Subscriber _subscriber : subscribersOfTopic){
 						if(_subscriber.equals(subscriber)){
-							//add broadcasted message to subscriber message queue
+							//fügt die Nachrichten der Warteschlange der Subscriber hinzu
 							List<Message> subscriberMessages = subscriber.getSubscriberMessages();
 							subscriberMessages.add(message);
 							subscriber.setSubscriberMessages(subscriberMessages);

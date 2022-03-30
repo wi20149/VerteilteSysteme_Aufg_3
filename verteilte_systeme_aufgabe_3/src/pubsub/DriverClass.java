@@ -10,63 +10,63 @@ import pubsub.subscriber.SubscriberImpl;
 public class DriverClass {
 	public static void main(String[] args) {
 		
-		//Instantiate publishers, subscribers and PubSubService 
-		Publisher javaPublisher = new PublisherImpl();
-		Publisher pythonPublisher = new PublisherImpl();
+		//Instanziert publishers, subscribers and PubSubService 
+		Publisher APublisher = new PublisherImpl();
+		Publisher BPublisher = new PublisherImpl();
 		
-		Subscriber javaSubscriber = new SubscriberImpl();
+		Subscriber ASubscriber = new SubscriberImpl();
 		Subscriber allLanguagesSubscriber = new SubscriberImpl();
-		Subscriber pythonSubscriber = new SubscriberImpl();
+		Subscriber BSubscriber = new SubscriberImpl();
 		
 		PubSubService pubSubService = new PubSubService();
 		
-		//Declare Messages and Publish Messages to PubSubService
-		Message javaMsg1 = new Message("Java", "Core Java Concepts");
-		Message javaMsg2 = new Message("Java", "Spring MVC : Dependency Injection and AOP");
-		Message javaMsg3 = new Message("Java", "JPA & Hibernate");
+		//Fügte den Publish Messages zum PubSubService hinzu
+		Message AMsg1 = new Message("Nachricht A.1");
+		Message AMsg2 = new Message("Nachricht A.2");
+		Message AMsg3 = new Message("Nachricht A.3");
 		
-		javaPublisher.publish(javaMsg1, pubSubService);
-		javaPublisher.publish(javaMsg2, pubSubService);
-		javaPublisher.publish(javaMsg3, pubSubService);
+		APublisher.publish(AMsg1, pubSubService);
+		APublisher.publish(AMsg2, pubSubService);
+		APublisher.publish(AMsg3, pubSubService);
 		
-		Message pythonMsg1 = new Message("Python", "Easy and Powerful programming language");
-		Message pythonMsg2 = new Message("Python", "Advanced Python message");
+		Message BMsg1 = new Message("Nachricht B.1");
+		Message BMsg2 = new Message("Nachricht B.2");
 		
-		pythonPublisher.publish(pythonMsg1, pubSubService);
-		pythonPublisher.publish(pythonMsg2, pubSubService);
+		BPublisher.publish(AMsg1, pubSubService);
+		BPublisher.publish(AMsg2, pubSubService);
 		
-		//Declare Subscribers 
-		javaSubscriber.addSubscriber("Java",pubSubService);		//Java subscriber only subscribes to Java topics
-		pythonSubscriber.addSubscriber("Python",pubSubService);   //Python subscriber only subscribes to Python topics
-		allLanguagesSubscriber.addSubscriber("Java", pubSubService);	//all subscriber, subscribes to both Java and Python
-		allLanguagesSubscriber.addSubscriber("Python", pubSubService);
+		//deklariert Subscribers 
+		ASubscriber.addSubscriber("A",pubSubService);		//A Subscriber nur zu A Topics
+		BSubscriber.addSubscriber("B",pubSubService);   //B Subscriber nur zu B Topics
+		allLanguagesSubscriber.addSubscriber("A", pubSubService);	//alle Subscriber
+		allLanguagesSubscriber.addSubscriber("B", pubSubService);
 		
-		//Trying unSubscribing a subscriber
-		//pythonSubscriber.unSubscribe("Python", pubSubService);
+		//Abbbonement beenden durch: 
+		//BSubscriber.unSubscribe("B", pubSubService);
 		
-		//Broadcast message to all subscribers. After broadcast, messageQueue will be empty in PubSubService
+		//Broadcast Nachricht an alle Abonnementen, nach dem Broadcast ist die Warteschlange leer im PubSubServie
 		pubSubService.broadcast();
 		
-		//Print messages of each subscriber to see which messages they got
-		System.out.println("Messages of Java Subscriber are: ");
-		javaSubscriber.printMessages();
+		//alle Messages werden in der Konsole ausgegeben 
+		System.out.println("Messages of A Subscriber are: ");
+		ASubscriber.printMessages();
 		
-		System.out.println("\nMessages of Python Subscriber are: ");
-		pythonSubscriber.printMessages();
+		System.out.println("\nMessages of B Subscriber are: ");
+		BSubscriber.printMessages();
 		
 		System.out.println("\nMessages of All Languages Subscriber are: ");
 		allLanguagesSubscriber.printMessages();
 		
-		//After broadcast the messagesQueue will be empty, so publishing new messages to server
-		System.out.println("\nPublishing 2 more Java Messages...");
-		Message javaMsg4 = new Message("Java", "JSP and Servlets");
-		Message javaMsg5 = new Message("Java", "Struts framework");
+		//nach dem Broadcast ist die Warteschlange leer und es werden neue Nachrichten an den Server gesendet 
+		System.out.println("\nPublishing 2 more A Messages...");
+		Message AMsg4 = new Message("Nachricht A.4");
+		Message AMsg5 = new Message("Nachricht A.5");
 		
-		javaPublisher.publish(javaMsg4, pubSubService);
-		javaPublisher.publish(javaMsg5, pubSubService);
+		APublisher.publish(javaMsg4, pubSubService);
+		APublisher.publish(javaMsg5, pubSubService);
 		
-		javaSubscriber.getMessagesForSubscriberOfTopic("Java", pubSubService);
-		System.out.println("\nMessages of Java Subscriber now are: ");
-		javaSubscriber.printMessages();		
+		ASubscriber.getMessagesForSubscriberOfTopic("A", pubSubService);
+		System.out.println("\nMessages of A Subscriber now are: ");
+		ASubscriber.printMessages();		
 	}
 }

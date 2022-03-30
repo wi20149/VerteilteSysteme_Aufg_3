@@ -6,7 +6,7 @@ import pubsub.Message;
 import pubsub.service.PubSubService;
  
 public abstract class Subscriber {	
-	//store all messages received by the subscriber
+	//in dieser Array Liste werden alle Nachrichten gespeichert
 	private List<Message> subscriberMessages = new ArrayList<Message>();
 	
 	public List<Message> getSubscriberMessages() {
@@ -16,16 +16,16 @@ public abstract class Subscriber {
 		this.subscriberMessages = subscriberMessages;
 	}
 	
-	//Add subscriber with PubSubService for a topic
+	//Subscriber wird hinzugefügt zum PubSubService für ein Thema 
 	public abstract void addSubscriber(String topic, PubSubService pubSubService);
 	
-	//Unsubscribe subscriber with PubSubService for a topic
+	//Subscriber wird entfernt 
 	public abstract void unSubscribe(String topic, PubSubService pubSubService);
 	
-	//Request specifically for messages related to topic from PubSubService
+	//Besondere Anfragen für ein Thema an den Service
 	public abstract void getMessagesForSubscriberOfTopic(String topic, PubSubService pubSubService);
 	
-	//Print all messages received by the subscriber 
+	//auf der Konsole werden die Nachrichten alle ausgedruckt 
 	public void printMessages(){
 		for(Message message : subscriberMessages){
 			System.out.println("Message Topic -> "+ message.getTopic() + " : " + message.getPayload());
