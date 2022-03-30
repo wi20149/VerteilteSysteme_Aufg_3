@@ -21,16 +21,16 @@ public class DriverClass {
 		PubSubService pubSubService = new PubSubService();
 		
 		//Fügte den Publish Messages zum PubSubService hinzu
-		Message AMsg1 = new Message("Nachricht A.1");
-		Message AMsg2 = new Message("Nachricht A.2");
-		Message AMsg3 = new Message("Nachricht A.3");
+		Message AMsg1 = new Message("A", "1");
+		Message AMsg2 = new Message("A", "2");
+		Message AMsg3 = new Message("A", "3");
 		
 		APublisher.publish(AMsg1, pubSubService);
 		APublisher.publish(AMsg2, pubSubService);
 		APublisher.publish(AMsg3, pubSubService);
 		
-		Message BMsg1 = new Message("Nachricht B.1");
-		Message BMsg2 = new Message("Nachricht B.2");
+		Message BMsg1 = new Message("B", "1");
+		Message BMsg2 = new Message("B", "2");
 		
 		BPublisher.publish(AMsg1, pubSubService);
 		BPublisher.publish(AMsg2, pubSubService);
@@ -59,11 +59,11 @@ public class DriverClass {
 		
 		//nach dem Broadcast ist die Warteschlange leer und es werden neue Nachrichten an den Server gesendet 
 		System.out.println("\nPublishing 2 more A Messages...");
-		Message AMsg4 = new Message("Nachricht A.4");
-		Message AMsg5 = new Message("Nachricht A.5");
+		Message AMsg4 = new Message("A", "4");
+		Message AMsg5 = new Message("A", "5");
 		
-		APublisher.publish(javaMsg4, pubSubService);
-		APublisher.publish(javaMsg5, pubSubService);
+		APublisher.publish(AMsg4, pubSubService);
+		APublisher.publish(AMsg5, pubSubService);
 		
 		ASubscriber.getMessagesForSubscriberOfTopic("A", pubSubService);
 		System.out.println("\nMessages of A Subscriber now are: ");
